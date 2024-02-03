@@ -6,53 +6,43 @@ import csv
 import re
 from const import *
 from dateutil import parser
-import datetime
+from datetime  import datetime
+import os.path
 
-
-class Monitorizare():
-    def __init__(self,nume_poarta):
-        self.date_acces=[]
-        self.numepoarta =nume_poarta
-        
-
-
-    def valideaza_acces(self,id_persoana,sens):
-        data_ora_acces =  datetime.datetime.now()
-        if id_persoana not in self.date_acces:
-            self.date_acces[id_persoana] = []
-            self.date_acces[id_persoana].append({'data_ora': data_ora_acces,
-                                                 'sens':sens})
-            
-
-    def salveaza_in_csv(self):
-        try:
-            with open(os.path.join(folder_intrari,self.numepoarta)) as file:
-                scriere_csv = csv.writer(file)
-                for id_persoana, date in self.date_acces.items():
-                    for acces in date:
-                        linie = [id_persoana, acces['data_ora'], acces['sens']]
-                        scriere_csv(linie)
-            print(f'Datele au fost salvate in fisierul CSV: {folder_intrari}')
-
-        except Exception as e:
-            print(f"Eroare la salvarea in fisierul CSV: {e}")
-
-            
-monitor=Monitorizare(nume_poarta='Poarta1.csv')
-monitor.valideaza_acces(1,'intrare')
-monitor.salveaza_in_csv()
 
 
 class MySqlConnection:
     def __init__(self):
-        self.mydb = mysql.connector.connect(host ='localhost', user='root', password = password, database ='curs29')
+        self.mydb = mysql.connector.connect(host ='localhost', user='root', password = password, database ='cladire')
         self.cursor =self.mydb.cursor()
 
     def adauga_in_baza_de_date(self,query):
         self.cursor.execute(query)
         self.mydb.commit()
 
+    def selecteaza_din_baza_de_date(self,query):
+        self.cursor.execute(query)
+        rezultat = self.cursor.fetchall()
+        return rezultat
 
+mysqlcon=MySqlConnection()
+
+
+
+
+
+
+def redenumeste_fisier(fisier):
+    if os.path.exists(folder_intrari + '/' + fisier):
+         data_curenta = datetime.now().strftime("%Y-%m-%d")
+         nume_fisier, extensie = os.path.splitext(fisier)
+         nume_nou =f'{nume_fisier}_{data_curenta}{extensie}'
+         cale_noua = os.path.join(folder_intrari, nume_nou)
+         cale_veche = os.path.join(folder_intrari, fisier)
+         os.rename(cale_veche,cale_noua)
+
+
+      
 def determina_tip_fisier(fisier):
     extensie = fisier.split('.')[-1].lower()
 
@@ -119,8 +109,6 @@ class citesteFisiere:
 
 
 
-
-mysqlcon=MySqlConnection()
 citestefisier = citesteFisiere()
 
     
@@ -139,21 +127,19 @@ def verifica_fisiere(folder_intrari):
                         query=f"INSERT INTO `cladire`.`acces`VALUES(null,'{line[0]}','{formatare_data(line[1])}','{line[2]}','{extrage_id(file)}');"
                         mysqlcon.adauga_in_baza_de_date(query)
                         print('A fost adaugat in SQL')
-                        move_file(file)
+
+                move_file(redenumeste_fisier(file))
             elif determina_tip_fisier(file) == 'txt':
                 for line in citestefisier.citeste_txt(file):
                         query=f"INSERT INTO `cladire`.`acces`VALUES(null,'{line[0]}','{formatare_data(line[1])}','{line[2]}','{extrage_id(file)}');"
                         mysqlcon.adauga_in_baza_de_date(query)
                         print('A fost adaugat in SQL')
-                        move_file(file)
+
+                move_file(redenumeste_fisier(file))
             else:
                 print('Introduceti un document de tipul CSV sau TEXT')
 
 
-            
-                    
-                    
-
-# while True:
-#     verifica_fisiere(folder_intrari)
-#     time.sleep(5)
+while True:
+    verifica_fisiere(folder_intrari)
+    time.sleep(5)
