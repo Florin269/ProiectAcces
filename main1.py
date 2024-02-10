@@ -4,7 +4,7 @@ import shutil
 import time
 import csv
 import re
-from const import *
+from Proiect.ProiectAcces.const import *
 from dateutil import parser
 from datetime  import datetime
 import os.path
@@ -13,7 +13,7 @@ import os.path
 
 class MySqlConnection:
     def __init__(self):
-        self.mydb = mysql.connector.connect(host ='localhost', user='root', password = password, database ='cladire')
+        self.mydb = mysql.connector.connect(host ='localhost', user='root', password = password, database = bazadate)
         self.cursor =self.mydb.cursor()
 
     def adauga_in_baza_de_date(self,query):
