@@ -4,11 +4,10 @@ import shutil
 import time
 import csv
 import re
-from Proiect.ProiectAcces.const import *
+from const import *
 from dateutil import parser
 from datetime  import datetime
 import os.path
-
 
 
 class MySqlConnection:
@@ -32,11 +31,11 @@ mysqlcon=MySqlConnection()
 
 
 
-def redenumeste_fisier(fisier):
+def redenumeste_fisier(fisier,folder_intrari):
     if os.path.exists(folder_intrari + '/' + fisier):
          data_curenta = datetime.now().strftime("%Y-%m-%d")
          nume_fisier, extensie = os.path.splitext(fisier)
-         nume_nou =f'{nume_fisier}_{data_curenta}{extensie}'
+         nume_nou =f'{nume_fisier}{data_curenta}{extensie}'
          cale_noua = os.path.join(folder_intrari, nume_nou)
          cale_veche = os.path.join(folder_intrari, fisier)
          os.rename(cale_veche,cale_noua)
@@ -60,7 +59,7 @@ def formatare_data(data_originala):
     return data_formatata
 
 
-def move_file(fisier):
+def move_file(fisier,folder_intrari):
     try:
         fisiere = [f for f in os.listdir(folder_intrari) if os.path.isfile(os.path.join(folder_intrari, f))]
         for fisier in fisiere:
@@ -84,7 +83,7 @@ class citesteFisiere:
         pass
 
 
-    def citeste_csv(self,fisier):
+    def citeste_csv(self,fisier,folder_intrari):
         try:
             with open(os.path.join(folder_intrari,fisier), 'r') as file:
                     cititor_csv = csv.reader(file)
@@ -96,7 +95,7 @@ class citesteFisiere:
             return None
     
 
-    def citeste_txt(self, fisier):
+    def citeste_txt(self, fisier,folder_intrari):
         try:
             with open(os.path.join(folder_intrari,fisier), 'r') as file:
                 cititor_txt = file.readlines()
@@ -113,33 +112,29 @@ citestefisier = citesteFisiere()
 
     
 def verifica_fisiere(folder_intrari):
+    print('Aplicatia a pornit')
     if not os.path.exists(folder_intrari):
         print(f'Folderul {folder_intrari} nu exista')
         return 
-    
-    files =[ f for f in os.listdir(folder_intrari) if os.path.isfile(os.path.join(folder_intrari,f))]
-    if not files:
-        print(f'Nu exista fisiere in folderul {folder_intrari}')
-    else:
-        for file in files:
-            if determina_tip_fisier(file) =='csv':
-                for line in citestefisier.citeste_csv(file):
-                        query=f"INSERT INTO `cladire`.`acces`VALUES(null,'{line[0]}','{formatare_data(line[1])}','{line[2]}','{extrage_id(file)}');"
-                        mysqlcon.adauga_in_baza_de_date(query)
-                        print('A fost adaugat in SQL')
+    initial_file = os.listdir(folder_intrari)
+    while True:
+        current_files = os.listdir(folder_intrari)
+        files =[ f for f in current_files if f not in initial_file]
+        if files:
+            for file in files:
+                if determina_tip_fisier(file) =='csv':
+                    for line in citestefisier.citeste_csv(file,folder_intrari):
+                            query=f"INSERT INTO `cladire`.`acces`VALUES(null,'{line[0]}','{formatare_data(line[1])}','{line[2]}','{extrage_id(file)}');"
+                            mysqlcon.adauga_in_baza_de_date(query)
 
-                move_file(redenumeste_fisier(file))
-            elif determina_tip_fisier(file) == 'txt':
-                for line in citestefisier.citeste_txt(file):
-                        query=f"INSERT INTO `cladire`.`acces`VALUES(null,'{line[0]}','{formatare_data(line[1])}','{line[2]}','{extrage_id(file)}');"
-                        mysqlcon.adauga_in_baza_de_date(query)
-                        print('A fost adaugat in SQL')
+                    move_file(redenumeste_fisier(file,folder_intrari),folder_intrari)
+                elif determina_tip_fisier(file) == 'txt':
+                    for line in citestefisier.citeste_txt(file,folder_intrari):
+                            query=f"INSERT INTO `cladire`.`acces`VALUES(null,'{line[0]}','{formatare_data(line[1])}','{line[2].rstrip(';')}','{extrage_id(file)}');"
+                            mysqlcon.adauga_in_baza_de_date(query)
+                    move_file(redenumeste_fisier(file,folder_intrari),folder_intrari)
+                else:
+                    print('Introduceti un document de tipul CSV sau TEXT')
+        initial_file = current_files
 
-                move_file(redenumeste_fisier(file))
-            else:
-                print('Introduceti un document de tipul CSV sau TEXT')
-
-
-while True:
-    verifica_fisiere(folder_intrari)
-    time.sleep(5)
+# verifica_fisiere('D:\Python curs\Proiect\ProiectAcces\intrari')

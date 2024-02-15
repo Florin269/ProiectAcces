@@ -1,0 +1,17 @@
+[{
+        "Id": 1,
+        "Nume": "Sava",
+        "Prenume": "Alex",
+        "Companie": "ITSchool",
+        "IdManager": null,
+        "Email": "alexsava@gmail.com"
+    },
+    {
+        "Id": 2,
+        "Nume": "Laurentiu",
+        "Prenume": "Laur",
+        "Companie": "ITSchool",
+        "IdManager": 1,
+        "Email": "laur@gmail.com"
+    }
+]
