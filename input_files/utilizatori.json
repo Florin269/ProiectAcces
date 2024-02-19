@@ -3,7 +3,7 @@
         "Nume": "Sava",
         "Prenume": "Alex",
         "Companie": "ITSchool",
-        "IdManager": null,
+        "IdManager": 2,
         "Email": "alexsava@gmail.com"
     },
     {

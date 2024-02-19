@@ -133,16 +133,17 @@ def run_test_one():
     return testPassed
 
 def start_server():
-    os.system(f'python "E:\IT School\Probleme\Curs32\main.py" 2')
+    print('Start server test.py')
+    Popen(["python", "main.py", "2",filesPath])
 
 
 def send_signup_request():
-    with open(r'E:\IT School\Probleme\Curs32\input_files\utilizatori.json','r') as jsonFile:
+    with open(r'D:/Python curs/Proiect/ProiectAcces/input_files/utilizatori.json','r') as jsonFile:
         data=json.load(jsonFile)
         time.sleep(5)
         for person in data:
             print(person)
-            response=requests.post('http://itschoolmihai.go.ro:5000/utilizator',json=person)
+            response=requests.post('http://127.0.0.1:5000/utilizator',json=person)
             if response.status_code!=200:
                 print("Eroare la inregistrare utilizator!")
     
@@ -158,10 +159,10 @@ def send_signup_request():
             print('Test 2.1 failed!')
 
 def send_access_request():
-     with open(r'E:\IT School\Probleme\Curs32\input_files\acces.json','r') as jsonFile:
+     with open(r'D:\Python curs\Proiect\ProiectAcces\input_files\acces.json','r') as jsonFile:
          acces=json.load(jsonFile)
          for object in acces:
-             response=requests.post('http://itschoolmihai.go.ro:5000/acces',json=object)
+             response=requests.post('http://127.0.0.1:5000/acces',json=object)
          intrari=mydb.selectQuery("SELECT * FROM acces where Poarta=3")
          ok=True
          try:
@@ -187,7 +188,7 @@ def run_test_two():
     t1.start()
     t2.start()
 
-run_test_one()
-# # run_test_two()
+# run_test_one()
+run_test_two()
 
 # mydb.truncateAllTables()

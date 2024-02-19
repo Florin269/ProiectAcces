@@ -4,7 +4,7 @@ import shutil
 import time
 import csv
 import re
-from Proiect.ProiectAcces.const import *
+from const import *
 from dateutil import parser
 from datetime  import datetime
 import smtplib
@@ -80,10 +80,5 @@ class Monitorizare():
 
 
 monitor = Monitorizare()
+monitor.extragere_date()
 
-
-schedule.every().day.at("20:00").do(monitor.extragere_date())
-
-while True:
-    schedule.run_pending()
-    time.sleep(60)

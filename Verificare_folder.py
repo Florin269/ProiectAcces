@@ -116,12 +116,8 @@ def verifica_fisiere(folder_intrari):
     if not os.path.exists(folder_intrari):
         print(f'Folderul {folder_intrari} nu exista')
         return 
-    initial_file = os.listdir(folder_intrari)
     while True:
-        current_files = os.listdir(folder_intrari)
-        files =[ f for f in current_files if f not in initial_file]
-        if files:
-            for file in files:
+            for file in os.listdir(folder_intrari):
                 if determina_tip_fisier(file) =='csv':
                     for line in citestefisier.citeste_csv(file,folder_intrari):
                             query=f"INSERT INTO `cladire`.`acces`VALUES(null,'{line[0]}','{formatare_data(line[1])}','{line[2]}','{extrage_id(file)}');"
@@ -135,6 +131,4 @@ def verifica_fisiere(folder_intrari):
                     move_file(redenumeste_fisier(file,folder_intrari),folder_intrari)
                 else:
                     print('Introduceti un document de tipul CSV sau TEXT')
-        initial_file = current_files
 
-# verifica_fisiere('D:\Python curs\Proiect\ProiectAcces\intrari')
