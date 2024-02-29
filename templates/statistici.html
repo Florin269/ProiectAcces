@@ -24,6 +24,10 @@
             text-align: center;
             color: #333;
         }
+        h2 {
+            color: #555;
+            text-align: center; /* Centrare titluri */
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -41,7 +45,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Statistici </h1>
+        <h1>Intrari - Iesiri</h1>
         <table>
             <thead>
                 <tr>
@@ -57,6 +61,46 @@
                 <tr>
                     {%for r in row%}
                     <td>{{ r }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h2> Angajati </h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nume</th>
+                    <th>Prenume</th>
+                    <th>Companie</th>
+                    <th>IdManager</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data1 %}
+                <tr>
+                    {%for j in row%}
+                    <td>{{ j }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h2> Ore Lucrate </h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nume</th>
+                    <th>Ore Lucrate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data2 %}
+                <tr>
+                    {%for i in row%}
+                    <td>{{ i }}</td>
                     {% endfor %}
                 </tr>
                 {% endfor %}
