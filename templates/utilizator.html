@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        /* Stiluri CSS pentru fundal */
+        body {
+            background-image: url('https://thumbs.dreamstime.com/z/business-office-glass-windows-building-business-office-glass-windows-building-sun-reflect-modern-construction-background-103607815.jpg?ct=jpeg'); /* specifică calea către imaginea dorită */
+            background-size: cover; /* asigură acoperirea completă a fundalului */
+            background-repeat: no-repeat; /* evită repetarea imaginii pe fundal */
+            height: 100vh; /* asigură ca imaginea să umple întreaga înălțime a ecranului */
+            margin: 0; /* elimină marginile implicite ale corpului */
+            display: flex;
+            justify-content: center; /* centrează orizontal formularul */
+            align-items: center; /* centrează vertical formularul */
+        }
+
+        /* Stiluri CSS pentru formular */
+        form {
+            width: 50%; /* Setează lățimea formularului */
+            padding: 20px; /* Adaugă un spațiu în jurul conținutului formularului */
+            background-color: rgba(255, 255, 255, 0.8); /* Adaugă un fundal alb semi-transparent la formular */
+            border-radius: 10px; /* Adaugă un colț rotunjit formularului */
+        }
+    </style>
+</head>
+<body>
+    <h1>Adaugă Utilizator</h1>
+    <form id="formAddUser">
+        <label for="nume">Nume:</label>
+        <input type="text" id="nume" name="nume"><br><br>
+        <label for="prenume">Prenume:</label>
+        <input type="text" id="prenume" name="prenume"><br><br>
+        <label for="companie">Companie:</label>
+        <input type="text" id="companie" name="companie"><br><br>
+        <label for="idManager">ID Manager:</label>
+        <input type="text" id="idManager" name="idManager"><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+        <button type="submit">Adaugă Utilizator</button>
+    </form>
+
+    <script>
+        // JavaScript pentru a trimite datele formularului către server
+        document.getElementById("formAddUser").addEventListener("submit", function(event) {
+            event.preventDefault(); // Previne acțiunea implicită de trimitere a formularului
+
+            // Colectează datele formularului
+            var formData = new FormData(this);
+
+            // Trimite datele către server folosind fetch
+            fetch('/adauga_utilizator', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('A apărut o eroare în timpul procesării solicitării.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Utilizator adăugat cu succes:', data);
+                // Poți face alte acțiuni aici, cum ar fi afișarea unui mesaj de succes sau redirecționarea către altă pagină
+            })
+            .catch(error => {
+                console.error('Eroare:', error);
+                // Poți afișa un mesaj de eroare sau poți lua alte măsuri în caz de eroare
+            });
+        });
+    </script>
+</body>
+</html>

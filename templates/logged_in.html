@@ -17,33 +17,37 @@
             margin: 0;
         }
 
-        /* Stilizare pentru butoane */
-        .btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 15px 30px; /* Modifică padding-ul pentru a mări butonul */
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-right: 10px;
-            text-decoration: none; /* Pentru a elimina sublinierea link-urilor */
-            display: inline-block; /* Pentru a permite setarea lățimii și a înălțimii */
-            font-size: 35px; /* Dimensiunea textului */
-            font-weight: bold; /* Grosimea textului */
-            text-align: center; /* Alinearea textului în centru */
-            width: 200px; /* Lățimea butonului */
-            height: 60px; /* Înălțimea butonului */
-        }
+        .button-container {
+    text-align: center;
+    margin-top: 50px; /* Spațiu de deasupra butoanelor */
+}
 
-        .btn:hover {
-            background-color: #0056b3;
-        }
+.btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 0 10px; /* Spațiu între butoane */
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
     </style>
 </head>
 <body>
-    <div>
-        <a href="{{ url_for('statistici') }}" class="btn">Statistici</a>
+    <div class="button-container">
+        <a href="/statistici" class="btn">Statistici</a>
+        <a href="/adauga_utilizator" class="btn">Adaugă Utilizator</a>
+        <a href="/sterge_utilizator" class="btn">Șterge Utilizator</a>
     </div>
+    
 </body>
 </html>
