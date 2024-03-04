@@ -20,9 +20,6 @@ else:
         
 
 
-    
-# else:
-#     print("Nicio optiune nu a fost potrivita!")
 
 
     
