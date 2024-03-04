@@ -10,6 +10,8 @@ from datetime  import datetime
 import os.path
 
 
+#Functie de conectare la baza de date.
+
 class MySqlConnection:
     def __init__(self):
         self.mydb = mysql.connector.connect(host ='localhost', user='root', password = password, database = bazadate)
