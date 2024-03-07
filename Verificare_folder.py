@@ -31,7 +31,7 @@ mysqlcon=MySqlConnection()
 
 
 
-
+#Functie redenumire fisier
 
 def redenumeste_fisier(fisier,folder_intrari):
     if os.path.exists(folder_intrari + '/' + fisier):
@@ -42,7 +42,7 @@ def redenumeste_fisier(fisier,folder_intrari):
          cale_veche = os.path.join(folder_intrari, fisier)
          os.rename(cale_veche,cale_noua)
 
-
+#Functie determina tip fisier ( csv sau txt)
       
 def determina_tip_fisier(fisier):
     extensie = fisier.split('.')[-1].lower()
@@ -54,12 +54,14 @@ def determina_tip_fisier(fisier):
     else:
         return None
     
-
+#functie formatare data
+    
 def formatare_data(data_originala):
     data_obj = parser.parse(data_originala)
     data_formatata = data_obj.strftime('%Y-%m-%d %H:%M:%S')
     return data_formatata
 
+#functie mutare fisier
 
 def move_file(fisier,folder_intrari):
     try:
@@ -79,6 +81,7 @@ def move_file(fisier,folder_intrari):
 def extrage_id(nume_fisier):
     return nume_fisier[6]
 
+#clasa pentru citirea fisierelor
 
 class citesteFisiere:
     def __init__(self):
@@ -112,6 +115,8 @@ class citesteFisiere:
 
 citestefisier = citesteFisiere()
 
+
+#functie pentru adaugarea si mutarea fisierelor
     
 def verifica_fisiere(folder_intrari):
     print('Aplicatia a pornit')
