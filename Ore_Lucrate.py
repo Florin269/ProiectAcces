@@ -27,7 +27,7 @@ class MySqlConnection:
 mysqlcon=MySqlConnection()
 
 
-
+#Functie verificare ore lucrate si trimite email catre manager.
 class Monitorizare():
     def __init__(self):
         pass
